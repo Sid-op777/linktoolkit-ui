@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useForm, SubmitHandler, set } from 'react-hook-form';
+import { useForm, SubmitHandler} from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { ImSpinner2 } from "react-icons/im";
 import ExpiryTimeSelector from './ExpiryTimeSelector';
@@ -17,7 +17,7 @@ export default function Home() {
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Add loading state
   const [errorMessage, setErrorMessage] = useState(''); //For error handling
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode] = useState(false);
   const [expiry, setExpiry] = useState('P1M');
   const [expiryType, setExpiryType] = useState<'duration' | 'date'>('duration');
 
