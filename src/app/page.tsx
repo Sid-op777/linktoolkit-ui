@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useForm, SubmitHandler, set } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { ImSpinner2 } from "react-icons/im";
+import ExpiryTimeSelector from './ExpiryTimeSelector';
 
 interface FormData {
   longUrl: string;
@@ -17,6 +18,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false); // Add loading state
   const [errorMessage, setErrorMessage] = useState(''); //For error handling
   const [darkMode, setDarkMode] = useState(false);
+  const [expiry, setExpiry] = useState('P1M');
+  const [expiryType, setExpiryType] = useState<'duration' | 'date'>('duration');
 
   useEffect(() => {
     if (darkMode) {
@@ -30,15 +33,28 @@ export default function Home() {
     setIsLoading(true); // Set loading state to true on submit
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/shorten?longUrl=${encodeURIComponent(data.longUrl)}&life=P1M`
-        , {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-
+      let response
+      if(expiryType=='duration'){
+        response = await fetch(
+          `http://localhost:8080/shorten?longUrl=${encodeURIComponent(data.longUrl)}&life=${expiry}`
+          , {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      }
+      else{
+        response = await fetch(
+          `http://localhost:8080/shorten?longUrl=${encodeURIComponent(data.longUrl)}&expiresAt=${expiry}`
+          , {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      }
+      
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -58,6 +74,10 @@ export default function Home() {
     navigator.clipboard.writeText(shortenedUrl);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
+  };
+
+  const handleExpiryChange = (newExpiry: string) => {
+    setExpiry(newExpiry);
   };
 
   return (
@@ -96,6 +116,7 @@ export default function Home() {
             {errorMessage && (<p className="text-red-500">{errorMessage}</p>)}
             {errors.longUrl && <p className="text-red-500">{errors.longUrl.message}</p>}
           </div>
+          <ExpiryTimeSelector onExpiryChange={handleExpiryChange}  expiryType={expiryType} setExpiryType={setExpiryType}/>
           <div>
             <button
               type="submit"
