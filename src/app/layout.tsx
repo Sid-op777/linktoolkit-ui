@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ['latin'], display: 'swap' })
 export const metadata: Metadata = {
   title: 'Link Toolkit',
   description: 'Created by me',
+  icons: {
+    icon: '/assets/logo.svg',
+  }
 }
 
 export default function RootLayout({

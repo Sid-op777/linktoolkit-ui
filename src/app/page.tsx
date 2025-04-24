@@ -1,20 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, set } from 'react-hook-form';
 import { motion } from 'framer-motion';
+import { ImSpinner2 } from "react-icons/im";
 
-// Define an interface for the form data
 interface FormData {
   longUrl: string;
 }
 
 export default function Home() {
   const [shortenedUrl, setShortenedUrl] = useState('');
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const [errorMessage, setErrorMessage] = useState(''); //For error handling
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsLoading(true); // Set loading state to true on submit
@@ -35,9 +45,10 @@ export default function Home() {
 
     const result = await response.json();
     setShortenedUrl('http:localhost:8080/'+result.id); //Assuming short URL is in result.shortUrl
+    setErrorMessage(''); // Clear error message on success
     } catch (error) {
       console.error('Error shortening URL:', error);
-      // Handle error (e.g., display an error message)
+      setErrorMessage('Failed to shorten URL. Please try again.');
     } finally {
       setIsLoading(false); // Set loading state back to false after API call
     }
@@ -50,9 +61,9 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-white`}>
       {/* Header Section */}
-      <header className="bg-white shadow-md py-4 px-6 w-full">
+      <header className="bg-white dark:bg-gray-800 shadow-md py-4 px-6 w-full">
         <div className="container mx-auto flex items-center">
           <Image
             src="/assets/logo.svg"
@@ -60,7 +71,7 @@ export default function Home() {
             width={32}
             height={32}
           />
-          <h1 className="text-xl font-semibold text-gray-800 ml-2">LinkToolkit</h1>
+          <h1 className="text-3xl font-semibold text-gray-800 dark:text-white ml-2">LinkToolkit</h1>
         </div>
       </header>
 
@@ -73,42 +84,71 @@ export default function Home() {
           <div>
             <input
               type="url"
-              {...register('longUrl', { required: true })}
+              {...register('longUrl', {
+                required: 'URL is required',
+                pattern: {
+                  value: /^(ftp|http|https):\/\/[^ "]+$/, // Basic URL pattern
+                  message: 'Invalid URL format',
+                },
+              })}
               placeholder="Paste a long URL"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-link-blue shadow-md"
-            />
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-link-blue shadow-md dark:bg-gray-700 dark:text-white dark:border-gray-600"            />
+            {errorMessage && (<p className="text-red-500">{errorMessage}</p>)}
+            {errors.longUrl && <p className="text-red-500">{errors.longUrl.message}</p>}
           </div>
           <div>
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-blue-400 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full py-2 px-4 bg-blue-400 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center"
+              disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Shorten'} {/* Conditionally render button text */}
+              {isLoading ? (
+                <>
+                  <ImSpinner2 className="size-5 animate-spin mr-4" />
+                  Loading...
+                </>
+              ) : (
+                'Shorten'
+              )}
             </button>
           </div>
         </form>
 
         {/* Shortened URL Display */}
         {shortenedUrl && (
-          <div className="mt-6 w-fit relative">
+          <motion.div
+            className="mt-6 w-fit relative"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             <input
               type="text"
               value={shortenedUrl}
               readOnly
-              className="w-full px-4 py-2 pr-18 border rounded-md focus:outline-none shadow-lg text-gray-700"
+              className="w-full px-4 py-2 pr-18 border rounded-md focus:outline-none shadow-lg text-gray-700 dark:bg-gray-800 dark:text-white"
               style={{ borderColor: '#54A2FC' }}
             />
             <div className="absolute top-0 right-0 h-full flex items-center pr-2">
               <button
                 onClick={handleCopyClick}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-              >
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white"              >
                 {isCopied ? 'Copied!' : 'Copy'}
               </button>
             </div>
-          </div>
+          </motion.div>
         )}
       </main>
+      <footer className="bg-white dark:bg-gray-800 shadow-md py-4 px-6 w-full">
+        <Image
+          src="/assets/nx7.svg"
+          alt="LinkToolkit Logo"
+          width={42}
+          height={42}
+          className='mx-auto'
+        />
+      </footer>
     </div>
+    
   );
 }
