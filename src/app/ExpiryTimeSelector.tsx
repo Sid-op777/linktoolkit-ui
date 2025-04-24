@@ -105,12 +105,16 @@ const ExpiryTimeSelector: React.FC<ExpiryTimeSelectorProps> = ({ onExpiryChange,
                     {expiryType === 'duration' && (
                         <Box display="flex" flexDirection="column" gap={2}>
                             {/* Year Input */}
-                            <FormControl variant="outlined" fullWidth>
+                            <FormControl variant="filled" fullWidth>
                                 <InputLabel>Years</InputLabel>
                                 <Select
                                     value={duration.years}
                                     onChange={(e) => handleDurationChange('years', e.target.value as number)}
                                     label="Years"
+                                    sx={{
+                                        bgcolor: 'background.paper',
+                                        color: 'text.primary'
+                                      }}
                                 >
                                     {[...Array(6).keys()].map((i) => (
                                         <MenuItem key={i} value={i}>
@@ -121,12 +125,17 @@ const ExpiryTimeSelector: React.FC<ExpiryTimeSelectorProps> = ({ onExpiryChange,
                             </FormControl>
 
                             {/* Month Input */}
-                            <FormControl variant="outlined" fullWidth>
+                            <FormControl variant="filled" fullWidth>
                                 <InputLabel>Months</InputLabel>
                                 <Select
                                     value={duration.months}
                                     onChange={(e) => handleDurationChange('months', e.target.value as number)}
                                     label="Months"
+                                    
+                                    sx={{
+                                        bgcolor: 'background.paper',
+                                        color: 'text.primary'
+                                      }}
                                 >
                                     {[...Array(12).keys()].map((i) => (
                                         <MenuItem key={i} value={i}>
@@ -137,12 +146,16 @@ const ExpiryTimeSelector: React.FC<ExpiryTimeSelectorProps> = ({ onExpiryChange,
                             </FormControl>
 
                             {/* Day Input */}
-                            <FormControl variant="outlined" fullWidth>
+                            <FormControl variant="filled" fullWidth>
                                 <InputLabel>Days</InputLabel>
                                 <Select
                                     value={duration.days}
                                     onChange={(e) => handleDurationChange('days', e.target.value as number)}
                                     label="Days"
+                                    sx={{
+                                        bgcolor: 'background.paper',
+                                        color: 'text.primary'
+                                      }}
                                 >
                                     {[...Array(31).keys()].map((i) => (
                                         <MenuItem key={i} value={i}>
@@ -161,6 +174,13 @@ const ExpiryTimeSelector: React.FC<ExpiryTimeSelectorProps> = ({ onExpiryChange,
                                     value={selectedDate}
                                     onChange={handleDateChange}
                                     minDate={new Date()} // Disable past dates
+                                    sx={{
+                                        bgcolor: 'background.paper',
+                                        color: 'text.primary',
+                                        borderRadius: 2,
+                                        boxShadow: 2,
+                                        p: 1
+                                      }}
                                 />
                             </LocalizationProvider>
                         </Box>
