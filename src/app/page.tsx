@@ -34,9 +34,11 @@ export default function Home() {
 
     try {
       let response
+      const baseUrl = "https://linktoolkit-production.up.railway.app";
+
       if(expiryType=='duration'){
         response = await fetch(
-          `http://localhost:8080/shorten?longUrl=${encodeURIComponent(data.longUrl)}&life=${expiry}`
+          `${baseUrl}/shorten?longUrl=${encodeURIComponent(data.longUrl)}&life=${expiry}`
           , {
           method: 'POST',
           headers: {
@@ -46,7 +48,7 @@ export default function Home() {
       }
       else{
         response = await fetch(
-          `http://localhost:8080/shorten?longUrl=${encodeURIComponent(data.longUrl)}&expiresAt=${expiry}`
+          `${baseUrl}/shorten?longUrl=${encodeURIComponent(data.longUrl)}&expiresAt=${expiry}`
           , {
           method: 'POST',
           headers: {
@@ -60,7 +62,7 @@ export default function Home() {
     }
 
     const result = await response.json();
-    setShortenedUrl('http:localhost:8080/'+result.id); //Assuming short URL is in result.shortUrl
+    setShortenedUrl(`${baseUrl}/` + result.id); //Assuming short URL is in result.shortUrl
     setErrorMessage(''); // Clear error message on success
     } catch (error) {
       console.error('Error shortening URL:', error);
