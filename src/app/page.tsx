@@ -20,6 +20,7 @@ export default function Home() {
   const [darkMode] = useState(false);
   const [expiry, setExpiry] = useState('P1M');
   const [expiryType, setExpiryType] = useState<'duration' | 'date'>('duration');
+  const [isServerOffline, setIsServerOffline] = useState(false); // Add state for server offline alert
 
   useEffect(() => {
     if (darkMode) {
@@ -29,12 +30,30 @@ export default function Home() {
     }
   }, [darkMode]);
 
+  useEffect(() => {
+    const checkServerStatus = async () => {
+      try {
+        const baseUrl = "https://major-calf-splendid.ngrok-free.app";
+        const response = await fetch(`${baseUrl}/ping`); // Assuming /ping is the endpoint to check server status
+        if (response.ok) {
+          setIsServerOffline(false); // Server is online
+        } else {
+          setIsServerOffline(true); // Server is offline
+        }
+      } catch (error) {
+        console.error('Error checking server status:', error);
+        setIsServerOffline(true); // Server is offline if there's an error
+      }
+    };
+    checkServerStatus();
+  }, []);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsLoading(true); // Set loading state to true on submit
 
     try {
       let response
-      const baseUrl = "https://linktoolkit-production.up.railway.app";
+      const baseUrl = "https://major-calf-splendid.ngrok-free.app";
 
       if(expiryType=='duration'){
         response = await fetch(
@@ -84,6 +103,14 @@ export default function Home() {
 
   return (
     <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-white`}>
+      {/* Server Offline Notification */}
+      {isServerOffline && (
+        <div className="fixed top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white text-center py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-out"
+        style={{ animation: 'fadeIn 0.5s ease-in-out' }}>
+          Server Offline
+        </div>
+      )}
+
       {/* Header Section */}
       <header className="bg-white dark:bg-gray-800 shadow-md py-4 px-6 w-full">
         <div className="container mx-auto flex items-center">
