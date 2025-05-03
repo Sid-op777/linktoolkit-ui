@@ -33,7 +33,9 @@ export default function Home() {
   useEffect(() => {
     const checkServerStatus = async () => {
       try {
-        const baseUrl = "https://major-calf-splendid.ngrok-free.app";
+        // const baseUrl = "https://major-calf-splendid.ngrok-free.app";
+        // const baseUrl = "http://localhost:8080"
+        const baseUrl = "https://linktoolkit.onrender.com"
         const response = await fetch(`${baseUrl}/ping`); // Assuming /ping is the endpoint to check server status
         if (response.ok) {
           setIsServerOffline(false); // Server is online
@@ -53,7 +55,9 @@ export default function Home() {
 
     try {
       let response
-      const baseUrl = "https://major-calf-splendid.ngrok-free.app";
+      // const baseUrl = "https://major-calf-splendid.ngrok-free.app";
+      // const baseUrl = "http://localhost:8080"
+      const baseUrl = "https://linktoolkit.onrender.com"
 
       if(expiryType=='duration'){
         response = await fetch(
