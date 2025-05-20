@@ -112,7 +112,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                     <div className="flex flex-col space-y-3 mb-4">
                         <button className="flex items-center justify-center gap-2 bg-white border dark:bg-gray-700 dark:border-gray-600 text-gray-700 dark:text-white py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         onClick={()=>{
-                            window.location.href = '${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/oauth2/authorization/google';
+                            window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/oauth2/authorization/google`;
                         }}>
                             <FaGoogle /> Continue with Google
                         </button>
