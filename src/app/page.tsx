@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useForm, SubmitHandler} from 'react-hook-form';
+import { useForm, SubmitHandler, set } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { ImSpinner2 } from "react-icons/im";
 import ExpiryTimeSelector from './ExpiryTimeSelector';
+import AuthModal from '../components/AuthModal';
 
 interface FormData {
   longUrl: string;
@@ -21,6 +22,21 @@ export default function Home() {
   const [expiry, setExpiry] = useState('P1M');
   const [expiryType, setExpiryType] = useState<'duration' | 'date'>('duration');
   const [isServerOffline, setIsServerOffline] = useState(false); // Add state for server offline alert
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Check if a valid token exists in localStorage on page load
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true); // User is logged in
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Remove JWT
+    setIsLoggedIn(false); // Update state
+  };
 
   useEffect(() => {
     if (darkMode) {
@@ -33,10 +49,8 @@ export default function Home() {
   useEffect(() => {
     const checkServerStatus = async () => {
       try {
-        // const baseUrl = "https://major-calf-splendid.ngrok-free.app";
-        // const baseUrl = "http://localhost:8080"
-        const baseUrl = "https://linktoolkit.onrender.com"
-        const response = await fetch(`${baseUrl}/ping`); // Assuming /ping is the endpoint to check server status
+        const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+        const response = await fetch(`${baseUrl}/ping`); 
         if (response.ok) {
           setIsServerOffline(false); // Server is online
         } else {
@@ -54,39 +68,35 @@ export default function Home() {
     setIsLoading(true); // Set loading state to true on submit
 
     try {
-      let response
-      // const baseUrl = "https://major-calf-splendid.ngrok-free.app";
-      // const baseUrl = "http://localhost:8080"
-      const baseUrl = "https://linktoolkit.onrender.com"
+      const token = localStorage.getItem('token');
+      const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
-      if(expiryType=='duration'){
-        response = await fetch(
-          `${baseUrl}/shorten?longUrl=${encodeURIComponent(data.longUrl)}&life=${expiry}`
-          , {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
+      const requestBody: any = {
+        longUrl: data.longUrl,
+      };
+
+      if (expiryType === 'duration') {
+        requestBody.life = expiry;
+      } else {
+        requestBody.expiresAt = expiry;
       }
-      else{
-        response = await fetch(
-          `${baseUrl}/shorten?longUrl=${encodeURIComponent(data.longUrl)}&expiresAt=${expiry}`
-          , {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
+
+      const response = await fetch(`${baseUrl}/shorten`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+        body: JSON.stringify(requestBody),
       });
-      }
-      
-    if (!response.ok) {
+
+      if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+      }
 
-    const result = await response.json();
-    setShortenedUrl(`${baseUrl}/` + result.id); //Assuming short URL is in result.shortUrl
-    setErrorMessage(''); // Clear error message on success
+      const result = await response.json();
+      setShortenedUrl(`${baseUrl}/${result.id}`);
+      setErrorMessage(''); // Clear error message on success
     } catch (error) {
       console.error('Error shortening URL:', error);
       setErrorMessage('Failed to shorten URL. Please try again.');
@@ -110,7 +120,7 @@ export default function Home() {
       {/* Server Offline Notification */}
       {isServerOffline && (
         <div className="fixed top-3 left-1/2 transform -translate-x-1/2 bg-red-500 text-white text-center py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-out"
-        style={{ animation: 'fadeIn 0.5s ease-in-out' }}>
+          style={{ animation: 'fadeIn 0.5s ease-in-out' }}>
           Server Offline
         </div>
       )}
@@ -124,9 +134,32 @@ export default function Home() {
             width={32}
             height={32}
           />
-          <h1 className="text-3xl font-semibold text-gray-800 dark:text-white ml-2">LinkToolkit</h1>
+          <h1 className="text-3xl font-semibold text-gray-800 dark:text-white ml-2">
+            LinkToolkit
+          </h1>
+          <div className="ml-auto">
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-500 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsAuthModalOpen(true)}
+                className="px-4 py-2 bg-blue-400 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                Login/Register
+              </button>
+            )}
+          </div>
         </div>
       </header>
+
+      {isAuthModalOpen && (
+        <AuthModal onClose={() => setIsAuthModalOpen(false)} />
+      )}
 
       {/* Main Content Section */}
       <main className="flex flex-col items-center justify-center flex-grow w-full max-w-md mx-auto">
@@ -145,11 +178,11 @@ export default function Home() {
                 },
               })}
               placeholder="Paste a long URL"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-link-blue shadow-md dark:bg-gray-700 dark:text-white dark:border-gray-600"            />
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-link-blue shadow-md dark:bg-gray-700 dark:text-white dark:border-gray-600" />
             {errorMessage && (<p className="text-red-500">{errorMessage}</p>)}
             {errors.longUrl && <p className="text-red-500">{errors.longUrl.message}</p>}
           </div>
-          <ExpiryTimeSelector onExpiryChange={handleExpiryChange}  expiryType={expiryType} setExpiryType={setExpiryType}/>
+          <ExpiryTimeSelector onExpiryChange={handleExpiryChange} expiryType={expiryType} setExpiryType={setExpiryType} />
           <div>
             <button
               type="submit"
@@ -203,6 +236,6 @@ export default function Home() {
         />
       </footer>
     </div>
-    
+
   );
 }
