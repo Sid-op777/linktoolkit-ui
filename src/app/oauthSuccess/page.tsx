@@ -17,7 +17,7 @@ const OAuthSuccessPage = () => {
     } else {
       router.push('/'); // fallback
     }
-  }, []);
+  }, [router]);
 
   return <p>Logging you in...</p>;
 };

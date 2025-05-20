@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useForm, SubmitHandler, set } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { ImSpinner2 } from "react-icons/im";
 import ExpiryTimeSelector from './ExpiryTimeSelector';
@@ -11,6 +11,12 @@ import AuthModal from '../components/AuthModal';
 interface FormData {
   longUrl: string;
 }
+
+type RequestBody = {
+  longUrl: string;
+  life?: string;
+  expiresAt?: string;
+};
 
 export default function Home() {
   const [shortenedUrl, setShortenedUrl] = useState('');
@@ -71,7 +77,7 @@ export default function Home() {
       const token = localStorage.getItem('token');
       const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
-      const requestBody: any = {
+      const requestBody: RequestBody = {
         longUrl: data.longUrl,
       };
 

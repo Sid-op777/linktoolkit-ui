@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaGoogle, FaGithub } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 
 interface AuthModalProps {
     onClose: () => void;
@@ -57,8 +57,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
 
         localStorage.setItem('token', text); // Store JWT
         onClose(); // Close modal
-    } catch (err: any) {
-        setError(err.message || 'Something went wrong');
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            setError(err.message);
+        } else {
+            setError('Something went wrong');
+        }
     } finally {
         setIsSubmitting(false);
     }
