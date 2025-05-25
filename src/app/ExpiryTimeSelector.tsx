@@ -53,7 +53,7 @@ const ExpiryTimeSelector: React.FC<ExpiryTimeSelectorProps> = ({ onExpiryChange,
             {!showExpiryOptions ? (
                 <Button
                     onClick={() => setShowExpiryOptions(true)}
-                    variant="contained"
+                    variant="outlined"
                     sx={{
                         marginBottom: '16px',
                         backgroundColor: '#54A2FC', // your custom blue
@@ -70,7 +70,7 @@ const ExpiryTimeSelector: React.FC<ExpiryTimeSelectorProps> = ({ onExpiryChange,
                     {/* Toggle Buttons for Duration/Date */}
                     <Box display="flex" gap={2}>
                     <Button
-                        variant="contained"
+                        variant="outlined"
                         onClick={() => handleExpiryTypeChange('duration')}
                         sx={{
                         flex: 1,
