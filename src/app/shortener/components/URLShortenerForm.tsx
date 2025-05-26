@@ -85,11 +85,13 @@ export const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onLinkCreate
         />
         <p className="mt-1 text-xs dark:text-slate-400">If left blank, a random alias will be generated.</p>
       </div>
+      <p className="block text-sm font-medium dark:text-slate-300 mb-1">Set URL Expiry</p>
       <ExpiryTimeSelector
           onExpiryChange={setExpiry}
           expiryType={expiryType}
           setExpiryType={setExpiryType}
         />
+        
       {error && <p className="text-sm text-red-400">{error}</p>}
       <Button type="submit" variant="primary" size="lg" className="w-full" isLoading={isLoading}>
         Shorten URL

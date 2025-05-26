@@ -13,6 +13,10 @@ import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import LinkIcon from '@mui/icons-material/Link';
 import CampaignIcon from '@mui/icons-material/Campaign';
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import ApiIcon from '@mui/icons-material/Api';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import MouseIcon from '@mui/icons-material/Mouse';
 
 interface FormData {
   longUrl: string;
@@ -137,6 +141,34 @@ export default function Home() {
             linkTo="/utm-builder"
           />
         </div>
+        <br/>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <FeatureCard 
+          title="Bulk Shortening"
+          description="Shorten multiple URLs at once with ease. Ideal for campaigns and batch processing."
+          icon={<ViewInArIcon className="w-6 h-6" />}
+          linkTo="/shortener"
+        />
+        <FeatureCard 
+          title="API Endpoints"
+          description="Integrate link shortening and tracking into your own apps using our powerful API."
+          icon={<ApiIcon className="w-6 h-6" />}
+          linkTo="/shortener"
+        />
+        <FeatureCard 
+          title="Browser Extension"
+          description="Quickly shorten URLs from any tab using our Chrome extension. Speed and convenience at your fingertips."
+          icon={<ExtensionIcon className="w-6 h-6" />}
+          linkTo="/shortener"
+        />
+
+        <FeatureCard 
+          title="Right-Click Shorten"
+          description="Right-click any link and instantly shorten and copy it. Integrated seamlessly into your browser."
+          icon={<MouseIcon className="w-6 h-6" />}
+          linkTo="/shortener"
+        />
+      </div>
       </section>
 
       {/* <form

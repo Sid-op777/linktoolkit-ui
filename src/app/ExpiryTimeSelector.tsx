@@ -55,15 +55,14 @@ const ExpiryTimeSelector: React.FC<ExpiryTimeSelectorProps> = ({ onExpiryChange,
                     onClick={() => setShowExpiryOptions(true)}
                     variant="outlined"
                     sx={{
-                        marginBottom: '16px',
-                        backgroundColor: '#54A2FC', // your custom blue
+                        backgroundColor: '#0284c7', // custom blue
                         color: 'white',
                         '&:hover': {
                           backgroundColor: '#3c8be0', // slightly darker on hover
                         },
                       }}
                 >
-                    Set URL Expiry (Default: 1 Month)
+                    Default: 1 Month
                 </Button>
             ) : (
                 <Box display="flex" flexDirection="column" gap={2}>

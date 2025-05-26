@@ -52,7 +52,7 @@ export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) 
 
 
   return (
-    <div className="bg-slate-300 dark:bg-slate-800 p-4 rounded-lg shadow-lg hover:shadow-sky-500/20 transition-shadow duration-300">
+    <div className="bg-sky-300/20 dark:bg-slate-800 p-4 rounded-lg shadow-lg hover:shadow-sky-500/20 transition-shadow duration-300">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div className="flex-grow min-w-0">
           <a
@@ -67,7 +67,7 @@ export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) 
             Original: {link.originalUrl}
           </p>
         </div>
-        <div className="text-slate-300 text-sm sm:text-right mt-2 sm:mt-0">
+        <div className="dark:text-slate-300 text-sm sm:text-right mt-2 sm:mt-0">
           <p>Clicks: {link.clicks}</p>
           <p>Created: {formatDate(link.createdAt)}</p>
           {link.expiry && <p>Expires: {formatDate(link.expiry)}</p>}
