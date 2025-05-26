@@ -19,7 +19,7 @@ const QRCodePage: React.FC = () => {
   return (
     <div className="container mx-auto max-w-2xl py-8 px-4">
       <h1 className="text-4xl font-bold text-center text-sky-400 mb-2">QR Code Generator</h1>
-      <p className="text-lg text-slate-300 text-center mb-8">Generate QR codes for your URLs instantly.</p>
+      <p className="text-lg dark:text-slate-300 text-center mb-8">Generate QR codes for your URLs instantly.</p>
       
       <QRCodeGenerator onQRCodeGenerated={handleQRCodeGenerated} />
       

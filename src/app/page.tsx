@@ -7,9 +7,12 @@ import { motion } from 'framer-motion';
 import { ImSpinner2 } from 'react-icons/im';
 import ExpiryTimeSelector from './ExpiryTimeSelector';
 import FeatureCard from '../components/FeatureCard';
-import { LinkIcon } from '@/components/LinkIcon';
 import Link from 'next/link';
 import { Button } from '@/components/Button';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
+import LinkIcon from '@mui/icons-material/Link';
+import CampaignIcon from '@mui/icons-material/Campaign';
 
 interface FormData {
   longUrl: string;
@@ -93,7 +96,7 @@ export default function Home() {
         LinkToolkit
       </h1>
 
-      <p className="mt-4 text-xl text-slate-300 max-w-2xl mx-auto">
+      <p className="mt-4 text-xl text-gray-800 dark:text-slate-300 max-w-2xl mx-auto">
         Your all-in-one solution for managing, tracking, and optimizing your links. Effortlessly shorten URLs, generate QR codes, build UTM campaigns, and analyze performance.
       </p>
 
@@ -118,19 +121,19 @@ export default function Home() {
           <FeatureCard 
             title="QR Code Generator"
             description="Instantly generate QR codes for your links. Download in various formats."
-            icon={<LinkIcon className="w-6 h-6" />}
+            icon={<QrCodeScannerIcon className="w-6 h-6" />}
             linkTo="/qr-code"
           />
           <FeatureCard 
             title="Analytics Dashboard"
             description="Track link performance with detailed analytics on clicks, referrers, and more."
-            icon={<LinkIcon className="w-6 h-6" />}
+            icon={<AnalyticsOutlinedIcon className="w-6 h-6" />}
             linkTo="/analytics"
           />
           <FeatureCard 
             title="UTM Builder"
             description="Easily append UTM parameters to your URLs for precise campaign tracking."
-            icon={<LinkIcon className="w-6 h-6" />}
+            icon={<CampaignIcon className="w-6 h-6" />}
             linkTo="/utm-builder"
           />
         </div>

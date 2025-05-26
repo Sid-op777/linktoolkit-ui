@@ -19,9 +19,9 @@ export const AnalyticsDashboardContent: React.FC<AnalyticsDashboardContentProps>
   }
 
   const SummaryCard: React.FC<{ title: string; value: string | number; className?: string }> = ({ title, value, className }) => (
-    <div className={`bg-slate-700 p-4 rounded-lg shadow ${className}`}>
-      <h4 className="text-sm font-medium text-slate-400">{title}</h4>
-      <p className="text-2xl font-semibold text-sky-400">{value}</p>
+    <div className={`bg-slate-300 dark:bg-slate-700 p-4 rounded-lg shadow ${className}`}>
+      <h4 className="text-sm font-medium dark:text-slate-400">{title}</h4>
+      <p className="text-2xl font-semibold text-sky-500 dark:text-sky-400">{value}</p>
     </div>
   );
 
@@ -29,7 +29,7 @@ export const AnalyticsDashboardContent: React.FC<AnalyticsDashboardContentProps>
     <div className="space-y-6 mt-6">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-sky-400 break-all">{analyticsData.shortUrl}</h2>
-        <p className="text-slate-400 text-sm truncate" title={analyticsData.originalUrl}>Original: {analyticsData.originalUrl}</p>
+        <p className="dark:text-slate-400 text-sm truncate" title={analyticsData.originalUrl}>Original: {analyticsData.originalUrl}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { LinkIcon } from '@/components/LinkIcon';
-import { PuzzlePieceIcon } from '@/components/PuzzlePieceIcon';
+import LinkIcon from '@mui/icons-material/Link';
+import CampaignIcon from '@mui/icons-material/Campaign';
 import { UTMParams, ToastType } from '../../../../types';
 import { buildUtmUrl } from '@/services/apiService';
 import { useToast } from '@/context/ToastContext';
@@ -76,7 +76,7 @@ export const UTMForm: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-slate-800 rounded-lg shadow-xl">
+    <div className="p-6 bg-slate-300 dark:bg-slate-800 rounded-lg shadow-xl">
       <form onSubmit={handleSubmit} className="space-y-6">
         <Input
           id="baseUrl"
@@ -99,7 +99,7 @@ export const UTMForm: React.FC = () => {
             id="template"
             name="template"
             onChange={handleTemplateChange}
-            className="block w-full appearance-none rounded-md border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
+            className="block w-full appearance-none rounded-md border border-slate-700 bg-gray-300 dark:bg-slate-800 px-3 py-2 dark:text-slate-100 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
             disabled={isLoading}
           >
             {predefinedTemplates.map(template => (
@@ -119,19 +119,19 @@ export const UTMForm: React.FC = () => {
         {error && <p className="text-sm text-red-400">{error}</p>}
         
         <Button type="submit" variant="primary" size="lg" className="w-full flex items-center justify-center gap-2" isLoading={isLoading}>
-          <PuzzlePieceIcon className="w-5 h-5" /> Generate UTM URL
+          <CampaignIcon className="w-5 h-5" /> Generate UTM URL
         </Button>
       </form>
 
       {generatedUrl && (
-        <div className="mt-8 p-4 bg-slate-700 rounded-md">
-          <h3 className="text-lg font-semibold text-slate-100 mb-2">Generated UTM URL:</h3>
+        <div className="mt-8 p-4 border-slate-700 bg-gray-200 dark:bg-slate-700 rounded-md">
+          <h3 className="text-lg font-semibold dark:text-slate-100 mb-2">Generated UTM URL:</h3>
           <div className="flex items-center gap-2">
             <Input
               type="text"
               value={generatedUrl}
               readOnly
-              className="text-sm flex-grow bg-slate-600 border-slate-500"
+              className="text-sm flex-grow bg-gray-300 dark:bg-slate-600 border-slate-500"
             />
             <Button onClick={handleCopy} variant="secondary" size="sm" className="flex items-center gap-1">
               <ClipboardIcon className="w-4 h-4" /> Copy

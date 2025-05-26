@@ -27,16 +27,16 @@ export const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ qrCodeUrl, origina
   };
 
   return (
-    <div className="mt-8 p-6 bg-slate-800 rounded-lg shadow-xl text-center">
-      <h3 className="text-xl font-semibold text-slate-100 mb-2">Your QR Code</h3>
-      <p className="text-sm text-slate-400 mb-4 break-all">For: {originalUrl}</p>
-      <div className="flex justify-center items-center bg-slate-700 p-4 rounded-md inline-block">
+    <div className="mt-8 p-6 dark:bg-slate-800 rounded-lg shadow-xl text-center">
+      <h3 className="text-xl font-semibold dark:text-slate-100 mb-2">Your QR Code</h3>
+      <p className="text-sm dark:text-slate-400 mb-4 break-all">For: {originalUrl}</p>
+      <div className="flex justify-center items-center bg-slate-300 dark:bg-slate-700 p-4 rounded-md inline-block">
         <img src={qrCodeUrl} alt={`QR Code for ${originalUrl}`} className="w-48 h-48 md:w-64 md:h-64 object-contain" />
       </div>
       <div className="mt-6 flex justify-center gap-3">
         <Button onClick={() => handleDownload('png')} variant="secondary">Download PNG</Button>
         {/* <Button onClick={() => handleDownload('svg')} variant="outline">Download SVG</Button> */}
-        <p className="text-xs text-slate-500 self-center">SVG download placeholder</p>
+        <p className="text-xs dark:text-slate-500 self-center">SVG download placeholder</p>
       </div>
     </div>
   );

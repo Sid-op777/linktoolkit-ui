@@ -52,18 +52,18 @@ export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) 
 
 
   return (
-    <div className="bg-slate-800 p-4 rounded-lg shadow-lg hover:shadow-sky-500/20 transition-shadow duration-300">
+    <div className="bg-slate-300 dark:bg-slate-800 p-4 rounded-lg shadow-lg hover:shadow-sky-500/20 transition-shadow duration-300">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div className="flex-grow min-w-0">
           <a
             href={link.shortUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sky-400 hover:text-sky-300 font-semibold text-lg break-all"
+            className="text-sky-500 dark:text-sky-400 hover:text-sky-300 font-semibold text-lg break-all"
           >
             {link.shortUrl.replace(/^https?:\/\//, '')}
           </a>
-          <p className="text-slate-400 text-sm truncate mt-1" title={link.originalUrl}>
+          <p className="dark:text-slate-400 text-sm truncate mt-1" title={link.originalUrl}>
             Original: {link.originalUrl}
           </p>
         </div>

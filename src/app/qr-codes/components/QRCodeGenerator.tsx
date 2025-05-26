@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { LinkIcon } from '@/components/LinkIcon';
+import LinkIcon from '@mui/icons-material/Link';
 import { generateQRCode } from '../../../services/apiService';
 // Fix: Import ToastType
 import { QRCodeApiResponse, ToastType } from '../../../../types';
@@ -51,7 +51,7 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ onQRCodeGenera
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-6 bg-slate-800 rounded-lg shadow-xl">
+    <form onSubmit={handleSubmit} className="space-y-6 p-6 bg-slate-300 dark:bg-slate-800 rounded-lg shadow-xl">
       <Input
         id="qrUrl"
         label="Enter URL for QR Code"

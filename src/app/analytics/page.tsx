@@ -79,7 +79,7 @@ const AnalyticsPage: React.FC = () => {
   return (
     <div className="container mx-auto max-w-6xl py-8 px-4">
       <h1 className="text-4xl font-bold text-center text-sky-400 mb-2">Link Analytics</h1>
-      <p className="text-lg text-slate-300 text-center mb-8">Track the performance of your shortened URLs.</p>
+      <p className="text-lg dark:text-slate-300 text-center mb-8">Track the performance of your shortened URLs.</p>
 
       {isLoadingLinks ? (
         <LoadingSpinner className="my-8" />
@@ -87,7 +87,7 @@ const AnalyticsPage: React.FC = () => {
         <p className="text-center text-slate-400 py-8">No links available to analyze. Please shorten some URLs first.</p>
       ) : (
         <div className="mb-8 max-w-md mx-auto">
-          <label htmlFor="linkSelect" className="block text-sm font-medium text-slate-300 mb-1">
+          <label htmlFor="linkSelect" className="block text-sm font-medium dark:text-slate-300 mb-1">
             Select a Link to Analyze
           </label>
           <div className="relative">
@@ -95,7 +95,7 @@ const AnalyticsPage: React.FC = () => {
               id="linkSelect"
               value={selectedLinkId || ''}
               onChange={handleLinkSelect}
-              className="block w-full appearance-none rounded-md border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
+              className="block w-full appearance-none rounded-md border border-slate-500 dark:border-slate-700 bg-slate-300 dark:bg-slate-800 px-3 py-2 dark:text-slate-100 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
             >
               <option value="">-- Select a Link --</option>
               {availableLinks.map(link => (
@@ -111,7 +111,7 @@ const AnalyticsPage: React.FC = () => {
 
       {selectedLinkId && <AnalyticsDashboardContent analyticsData={analyticsData} isLoading={isLoadingData} />}
       {!selectedLinkId && !isLoadingLinks && availableLinks.length > 0 && (
-         <p className="text-center text-slate-400 py-8">Please select a link from the dropdown to view its analytics.</p>
+         <p className="text-center dark:text-slate-400 py-8">Please select a link from the dropdown to view its analytics.</p>
       )}
     </div>
   );

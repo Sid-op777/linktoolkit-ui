@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { LinkIcon } from '@/components/LinkIcon';
+import LinkIcon from '@mui/icons-material/Link';
 import { shortenUrl } from '@/services/apiService'; 
 // Fix: Import ToastType
 import { ShortenApiResponse, ToastType } from '@/../types';
@@ -59,7 +59,7 @@ export const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onLinkCreate
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-6 bg-slate-800 rounded-lg shadow-xl">
+    <form onSubmit={handleSubmit} className="space-y-6 p-6 bg-slate-300 dark:bg-slate-800 rounded-lg shadow-xl">
       <div>
         <Input
           id="longUrl"
@@ -83,7 +83,7 @@ export const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onLinkCreate
           onChange={(e) => setAlias(e.target.value)}
           disabled={isLoading}
         />
-        <p className="mt-1 text-xs text-slate-400">If left blank, a random alias will be generated.</p>
+        <p className="mt-1 text-xs dark:text-slate-400">If left blank, a random alias will be generated.</p>
       </div>
       <ExpiryTimeSelector
           onExpiryChange={setExpiry}
