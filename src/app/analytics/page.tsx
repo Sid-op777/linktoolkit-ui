@@ -31,7 +31,7 @@ const AnalyticsPage: React.FC = () => {
       if (queryLinkId && links.some(l => l.id === queryLinkId)) {
         setSelectedLinkId(queryLinkId);
       }
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // Fix: Use ToastType enum
       addToast('Failed to load available links.', ToastType.Error);
@@ -59,6 +59,7 @@ const AnalyticsPage: React.FC = () => {
             // Fix: Use ToastType enum
             addToast('No analytics data found for this link.', ToastType.Info);
           }
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           // Fix: Use ToastType enum
           addToast('Failed to load analytics data.', ToastType.Error);

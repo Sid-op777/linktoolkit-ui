@@ -19,6 +19,7 @@ export const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onLinkCreate
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { addToast } = useToast();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [expiry, setExpiry] = useState('P1M');
     const [expiryType, setExpiryType] = useState<'duration' | 'date'>('duration');
 
@@ -34,6 +35,7 @@ export const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onLinkCreate
     try {
       // Basic URL validation (can be improved)
       new URL(longUrl);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
       setError('Please enter a valid URL (e.g., https://example.com).');
       return;

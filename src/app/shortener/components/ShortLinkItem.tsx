@@ -37,6 +37,7 @@ export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) 
         onDelete(link.id);
         // Optimistic update handled by parent, toast on success from parent
       } catch (error) {
+        console.error('Failed to delete link:', error);
         // Fix: Use ToastType enum
         addToast('Failed to delete link.', ToastType.Error);
       } finally {

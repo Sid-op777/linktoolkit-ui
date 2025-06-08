@@ -48,6 +48,7 @@ export const UTMForm: React.FC = () => {
     }
     try {
       new URL(params.baseUrl); // Basic validation
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
       setError('Please enter a valid Base URL (e.g., https://example.com).');
       return;

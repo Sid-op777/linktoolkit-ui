@@ -1,11 +1,9 @@
 'use client';
 
 
-import React, { useState, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { ImSpinner2 } from 'react-icons/im';
-import ExpiryTimeSelector from './ExpiryTimeSelector';
 import FeatureCard from '../components/FeatureCard';
 import Link from 'next/link';
 import { Button } from '@/components/Button';
@@ -22,20 +20,11 @@ interface FormData {
   longUrl: string;
 }
 
-type RequestBody = {
-  longUrl: string;
-  life?: string;
-  expiresAt?: string;
-};
 
 export default function Home() {
-  const [shortenedUrl, setShortenedUrl] = useState('');
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const [shortenedUrl] = useState('');
+  const {  formState: {  } } = useForm<FormData>();
   const [isCopied, setIsCopied] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [expiry, setExpiry] = useState('P1M');
-  const [expiryType, setExpiryType] = useState<'duration' | 'date'>('duration');
   // const [isServerOffline, setIsServerOffline] = useState(false);
 
   //  useEffect(() => {
@@ -51,36 +40,7 @@ export default function Home() {
   //   checkServerStatus();
   // }, []);
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    setIsLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-
-      const requestBody: RequestBody = {
-        longUrl: data.longUrl,
-        ...(expiryType === 'duration' ? { life: expiry } : { expiresAt: expiry }),
-      };
-
-      const response = await fetch(`${baseUrl}/shorten`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) throw new Error();
-      const result = await response.json();
-      setShortenedUrl(`${baseUrl}/${result.id}`);
-      setErrorMessage('');
-    } catch {
-      setErrorMessage('Failed to shorten URL. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
 
   const handleCopyClick = () => {
     navigator.clipboard.writeText(shortenedUrl);

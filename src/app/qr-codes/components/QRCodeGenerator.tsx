@@ -27,6 +27,7 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ onQRCodeGenera
     }
     try {
       new URL(url); // Basic validation
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
       setError('Please enter a valid URL (e.g., https://example.com).');
       return;
