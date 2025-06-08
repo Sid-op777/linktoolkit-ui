@@ -101,7 +101,7 @@ export default function Home() {
       </h1>
 
       <p className="mt-4 text-xl text-gray-800 dark:text-slate-300 max-w-2xl mx-auto">
-        Your all-in-one solution for managing, tracking, and optimizing your links. Effortlessly shorten URLs, generate QR codes, build UTM campaigns, and analyze performance.
+        All-in-one solution for managing, tracking, and optimizing your links. Effortlessly shorten URLs, generate QR codes, build UTM campaigns, and analyze performance.
       </p>
 
       <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4 mb-12">
@@ -126,7 +126,7 @@ export default function Home() {
             title="QR Code Generator"
             description="Instantly generate QR codes for your links. Download in various formats."
             icon={<QrCodeScannerIcon className="w-6 h-6" />}
-            linkTo="/qr-code"
+            linkTo="/qr-codes"
           />
           <FeatureCard 
             title="Analytics Dashboard"

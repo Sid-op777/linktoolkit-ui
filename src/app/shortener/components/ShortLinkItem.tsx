@@ -63,8 +63,8 @@ export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) 
           >
             {link.shortUrl.replace(/^https?:\/\//, '')}
           </a>
-          <p className="dark:text-slate-400 text-sm truncate mt-1" title={link.originalUrl}>
-            Original: {link.originalUrl}
+          <p className="dark:text-slate-400 text-sm break-all mt-1">
+            <span className="font-medium">Original:</span> {link.originalUrl}
           </p>
         </div>
         <div className="dark:text-slate-300 text-sm sm:text-right mt-2 sm:mt-0">
