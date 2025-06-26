@@ -19,7 +19,6 @@ export const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onLinkCreate
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [expiry, setExpiry] = useState('P1M');
     const [expiryType, setExpiryType] = useState<'duration' | 'date'>('duration');
 
@@ -43,9 +42,10 @@ export const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onLinkCreate
 
     setIsLoading(true);
     try {
-      const result = await shortenUrl({ url: longUrl, alias: alias.trim() || undefined });
-      // Fix: Use ToastType enum
-      addToast('Link shortened successfully!', ToastType.Success);
+      const result = await shortenUrl({ longUrl: longUrl, alias: alias.trim() || undefined, expiry });
+      const shortLink = result.shortUrl;
+      await navigator.clipboard.writeText(shortLink);
+      addToast(`Link shortened: ${shortLink} (copied to clipboard)`, ToastType.Success);
       onLinkCreated(result);
       setLongUrl('');
       setAlias('');
@@ -53,7 +53,6 @@ export const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onLinkCreate
       console.error("Shortening error:", apiError);
       const message = apiError instanceof Error ? apiError.message : 'Failed to shorten URL. Please try again.';
       setError(message);
-      // Fix: Use ToastType enum
       addToast(message, ToastType.Error);
     } finally {
       setIsLoading(false);

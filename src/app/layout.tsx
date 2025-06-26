@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next';
 import Header from '../components/Header'; 
 import Image from 'next/image';
 import { ToastProvider } from '../context/ToastContext';
+import { AuthProvider } from '@/services/AuthContext';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
@@ -25,7 +26,8 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
       <body className="bg-gray-100 dark:bg-gray-900 dark:text-white">
         <ToastProvider> 
-        <Header />
+        <AuthProvider>
+        <Header />        
 
         <main className="min-h-screen bg-gray-100 dark:bg-slate-900">
           {children}
@@ -40,10 +42,9 @@ export default function RootLayout({
             className="mx-auto"
           />
         </footer>
-
-        <Analytics />
+        </AuthProvider>
         </ToastProvider>
-
+        <Analytics />
       </body>
     </html>
   );

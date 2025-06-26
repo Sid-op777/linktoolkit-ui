@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { URLShortenerForm } from './components/URLShortenerForm';
 import { ShortLinkList } from './components/ShortLinkList';
-import { ShortLink, ShortenApiResponse, ToastType } from '../../../types';
-import { getShortLinks, deleteShortLink as apiDeleteShortLink } from '../../services/apiService';
+import { ShortLink, ShortenApiResponse, ToastType} from '../../../types';
+import { getShortLinks, getLinkDetails} from '../../services/apiService';
 import { useToast } from '../../context/ToastContext';
 
 const URLShortenerPage: React.FC = () => {
@@ -29,26 +29,12 @@ const URLShortenerPage: React.FC = () => {
     fetchLinks();
   }, [fetchLinks]);
 
-  const handleLinkCreated = (newLinkResponse: ShortenApiResponse) => {
-    const newLinkEntry: ShortLink = {
-      ...newLinkResponse,
-      clicks: 0,
-    };
-    setLinks(prevLinks => [newLinkEntry, ...prevLinks]);
-  };
-
-  const handleDeleteLink = async (id: string) => {
+  const handleLinkCreated = async(newLinkResponse: ShortenApiResponse) => {
     try {
-      const result = await apiDeleteShortLink(id);
-      if (result.success) {
-        setLinks(prevLinks => prevLinks.filter(link => link.id !== id));
-        addToast('Link deleted successfully.', ToastType.Success);
-      } else {
-        addToast('Failed to delete link. Link not found or error occurred.', ToastType.Error);
-      }
+      const detailedLink  = await getLinkDetails(newLinkResponse.shortUrl);
+      setLinks(prevLinks => [detailedLink, ...prevLinks]);
     } catch (error) {
-      addToast('Error deleting link.', ToastType.Error);
-      console.error("Error deleting link:", error);
+      console.error('Error updating links:', error);
     }
   };
 
@@ -60,7 +46,7 @@ const URLShortenerPage: React.FC = () => {
       </p>
       
       <URLShortenerForm onLinkCreated={handleLinkCreated} />
-      <ShortLinkList links={links} isLoading={isLoading} onDeleteLink={handleDeleteLink} />
+      <ShortLinkList links={links} isLoading={isLoading}/>
     </div>
   );
 };

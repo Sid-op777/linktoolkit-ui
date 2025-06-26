@@ -1,22 +1,21 @@
-
 export interface ShortLink {
   id: string;
-  originalUrl: string;
   shortUrl: string;
-  clicks: number;
-  createdAt: string; // ISO date string
-  expiry?: string; // ISO date string or human-readable
+  longUrl: string;
+  totalClicks: number;
+  createdAt: string; 
+  expiresAt: string;
 }
 
 export interface AnalyticsData {
-  linkId: string;
-  originalUrl: string;
+  id: string;
+  longUrl: string;
   shortUrl: string;
   totalClicks: number;
-  referrers: { source: string; count: number }[];
-  devices: { type: string; count: number }[];
-  locations: { country: string; count: number }[];
   clickTrend: { date: string; clicks: number }[];
+  referrers: { name: string; count: number }[];
+  devices: { name: string; count: number }[];
+  locations: { name: string; count: number }[];
 }
 
 export interface UTMParams {
@@ -30,16 +29,15 @@ export interface UTMParams {
 
 // API Request/Response types
 export interface ShortenApiRequest {
-  url: string;
+  longUrl: string;
   alias?: string;
+  expiry? : string;
 }
 
 export interface ShortenApiResponse {
-  id: string;
   shortUrl: string;
-  originalUrl: string;
-  createdAt: string;
-  expiry?: string;
+  longUrl: string;
+  expiresAt: string;
 }
 
 export interface QRCodeApiRequest {
@@ -47,7 +45,8 @@ export interface QRCodeApiRequest {
 }
 
 export interface QRCodeApiResponse {
-  qrCodeUrl: string; // URL to the QR image
+  shortUrl: string;
+  qrCodeUrl: string; 
 }
 
 // Toast types

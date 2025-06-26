@@ -32,9 +32,9 @@ export const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data, chartType 
       case 'devices':
       case 'locations':
         let pieData;
-        if (chartType === 'referrers') pieData = data.referrers.map(r => ({ name: r.source, value: r.count }));
-        else if (chartType === 'devices') pieData = data.devices.map(d => ({ name: d.type, value: d.count }));
-        else pieData = data.locations.map(l => ({ name: l.country, value: l.count }));
+        if (chartType === 'referrers') pieData = data.referrers.map(r => ({ name: r.name, value: r.count }));
+        else if (chartType === 'devices') pieData = data.devices.map(d => ({ name: d.name, value: d.count }));
+        else pieData = data.locations.map(l => ({ name: l.name, value: l.count }));
         
         // Filter out zero values for pie chart
         pieData = pieData.filter(item => item.value > 0);
@@ -52,7 +52,7 @@ export const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data, chartType 
                         outerRadius={100}
                         fill="#8884d8"
                         dataKey="value"
-                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
                     >
                         {pieData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS_PIE[index % COLORS_PIE.length]} />

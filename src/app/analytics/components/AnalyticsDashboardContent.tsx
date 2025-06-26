@@ -29,14 +29,14 @@ export const AnalyticsDashboardContent: React.FC<AnalyticsDashboardContentProps>
     <div className="space-y-6 mt-6">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-sky-400 break-all">{analyticsData.shortUrl}</h2>
-        <p className="dark:text-slate-400 text-sm truncate" title={analyticsData.originalUrl}>Original: {analyticsData.originalUrl}</p>
+        <p className="dark:text-slate-400 text-sm truncate" title={analyticsData.longUrl}>Original: {analyticsData.longUrl}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <SummaryCard title="Total Clicks" value={analyticsData.totalClicks} />
-        <SummaryCard title="Top Referrer" value={analyticsData.referrers[0]?.source || 'N/A'} />
-        <SummaryCard title="Top Device" value={analyticsData.devices[0]?.type || 'N/A'} />
-        <SummaryCard title="Top Location" value={analyticsData.locations[0]?.country || 'N/A'} />
+        <SummaryCard title="Top Referrer" value={analyticsData.referrers[0]?.name || 'N/A'} />
+        <SummaryCard title="Top Device" value={analyticsData.devices[0]?.name || 'N/A'} />
+        <SummaryCard title="Top Location" value={analyticsData.locations[0]?.name || 'N/A'} />
       </div>
       
       <AnalyticsChart data={analyticsData} chartType="clickTrend" />

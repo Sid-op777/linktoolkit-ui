@@ -93,7 +93,7 @@ export const AnalyticsPageContent: React.FC = () => {
               <option value="">-- Select a Link --</option>
               {availableLinks.map(link => (
                 <option key={link.id} value={link.id}>
-                  {link.shortUrl} ({link.originalUrl.substring(0, 30)}...)
+                  {link.shortUrl} ({link.longUrl.substring(0, 30)}...)
                 </option>
               ))}
             </select>

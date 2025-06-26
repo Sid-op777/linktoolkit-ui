@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@/services/AuthContext';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGoogle } from 'react-icons/fa';
@@ -9,63 +10,53 @@ interface AuthModalProps {
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
+    const { login, register } = useAuth();
     const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isGoogleDisabled] = useState(true); //temporaily disabling oauth because there are some issues
 
     const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+        e.preventDefault();
+        setError('');
 
-    // Basic frontend validation
-    if (!email || !password || (activeTab === 'register' && !name)) {
-        setError('Please fill in all required fields.');
-        return;
-    }
-
-    // Simple email regex (not bulletproof, but sufficient for frontend validation)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        setError('Please enter a valid email address.');
-        return;
-    }
-
-    setIsSubmitting(true);
-
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-    const endpoint = activeTab === 'login' ? '/auth/login' : '/auth/register';
-
-    const payload =
-        activeTab === 'login'
-        ? { email, password }
-        : { email, password, name };
-
-    try {
-        const res = await fetch(`${baseUrl}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        });
-
-        const text = await res.text(); // backend returns raw token string or error message
-        if (!res.ok) {
-        throw new Error(text);
+        // Basic frontend validation
+        if (!email || !password) {
+            setError('Please fill in all required fields.');
+            return;
         }
 
-        localStorage.setItem('token', text); // Store JWT
-        onClose(); // Close modal
-    } catch (err: unknown) {
-        if (err instanceof Error) {
-            setError(err.message);
-        } else {
-            setError('Something went wrong');
+        // Simple email regex (not bulletproof, but sufficient for frontend validation)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError('Please enter a valid email address.');
+            return;
         }
-    } finally {
-        setIsSubmitting(false);
-    }
+        if (activeTab === 'register' && password.length < 8) {
+            setError('Password must be at least 8 characters long.');
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            if (activeTab === 'login') {
+                await login(email, password);
+            } else {
+                await register(email, password);
+            }
+            onClose(); 
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('An unknown error occurred');
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -110,11 +101,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
 
                     {/* OAuth Buttons */}
                     <div className="flex flex-col space-y-3 mb-4">
-                        <button className="flex items-center justify-center gap-2 bg-white border dark:bg-gray-700 dark:border-gray-600 text-gray-700 dark:text-white py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
+                        <button className={`flex items-center justify-center gap-2 bg-white border dark:bg-gray-700 dark:border-gray-600 text-gray-700 dark:text-white py-2 rounded 
+                        ${isGoogleDisabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100 dark:hover:bg-gray-600'}`}
                         onClick={()=>{
                             window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/oauth2/authorization/google`;
-                        }}>
-                            <FaGoogle /> Continue with Google
+                        }}
+                        disabled = {isGoogleDisabled}
+                        >
+                            <FaGoogle /> Continue with Google (temporaily disabled)
                         </button>
                         {/*
                         <button className="flex items-center justify-center gap-2 bg-white border dark:bg-gray-700 dark:border-gray-600 text-gray-700 dark:text-white py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -128,15 +122,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
 
                     {/* Forms */}
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        {activeTab === 'register' && (
-                            <input
-                                type="text"
-                                placeholder="Full Name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 dark:bg-gray-700 dark:text-white"
-                            />
-                        )}
+                        
                         <input
                             type="email"
                             placeholder="Email"

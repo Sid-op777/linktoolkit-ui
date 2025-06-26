@@ -5,18 +5,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AuthModal from './AuthModal';
+import { useAuth } from '@/services/AuthContext';
 
 export default function Header() {
+    const { isAuthenticated, logout } = useAuth();
     const pathname = usePathname();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isServerOffline, setIsServerOffline] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) setIsLoggedIn(true);
-    }, []);
 
     useEffect(() => {
         if (menuOpen) {
@@ -32,15 +28,14 @@ export default function Header() {
 
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        setIsLoggedIn(false);
+        logout();
     };
 
     useEffect(() => {
         const checkServerStatus = async () => {
             try {
                 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-                const response = await fetch(`${baseUrl}/ping`);
+                const response = await fetch(`${baseUrl}/api/health`);
                 setIsServerOffline(!response.ok);
             } catch {
                 setIsServerOffline(true);
@@ -93,7 +88,7 @@ export default function Header() {
 
                     {/* Right Section (Button) */}
                     <div className="hidden lg:block">
-                        {isLoggedIn ? (
+                        {isAuthenticated  ? (
                             <button
                                 onClick={handleLogout}
                                 className="px-4 py-2 bg-red-500 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -103,7 +98,7 @@ export default function Header() {
                         ) : (
                             <button
                                 onClick={() => setIsAuthModalOpen(true)}
-                                className="px-4 py-2 bg-blue-400 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                             >
                                 Login/Register
                             </button>
@@ -159,7 +154,7 @@ export default function Header() {
                         </Link>
                     ))}
 
-                    {isLoggedIn ? (
+                    {isAuthenticated  ? (
                         <button
                             onClick={() => {
                                 handleLogout();

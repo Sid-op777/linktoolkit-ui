@@ -7,10 +7,9 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 interface ShortLinkListProps {
   links: ShortLink[];
   isLoading: boolean;
-  onDeleteLink: (id: string) => void;
 }
 
-export const ShortLinkList: React.FC<ShortLinkListProps> = ({ links, isLoading, onDeleteLink }) => {
+export const ShortLinkList: React.FC<ShortLinkListProps> = ({ links, isLoading}) => {
   if (isLoading) {
     return <LoadingSpinner className="my-8" />;
   }
@@ -23,7 +22,7 @@ export const ShortLinkList: React.FC<ShortLinkListProps> = ({ links, isLoading, 
     <div className="space-y-4 mt-8">
       <h2 className="text-2xl font-semibold text-slate-100 mb-4">Your Shortened Links</h2>
       {links.map((link) => (
-        <ShortLinkItem key={link.id} link={link} onDelete={onDeleteLink} />
+        <ShortLinkItem key={link.shortUrl} link={link} />
       ))}
     </div>
   );

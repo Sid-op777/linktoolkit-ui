@@ -1,23 +1,22 @@
 'use client'
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import Link from 'next/link';
 // Fix: Import ToastType
 import { ShortLink, ToastType } from '../../../../types';
 import { Button } from '../../../components/Button';
 import { ClipboardIcon } from '../../../components/ClipboardIcon';
-import { TrashIcon } from '../../../components/TrashIcon';
+// import { TrashIcon } from '../../../components/TrashIcon';
 import { ChartBarIcon } from '../../../components/ChartBarIcon';
 import { useToast } from '../../../context/ToastContext';
 
 interface ShortLinkItemProps {
   link: ShortLink;
-  onDelete: (id: string) => void;
 }
 
-export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) => {
+export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link }) => {
   const { addToast } = useToast();
-  const [isDeleting, setIsDeleting] = useState(false);
+  // const [isDeleting, setIsDeleting] = useState(false);
 
   const handleCopy = (textToCopy: string) => {
     navigator.clipboard.writeText(textToCopy)
@@ -30,21 +29,21 @@ export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) 
       });
   };
 
-  const handleDelete = async () => {
-    if (window.confirm(`Are you sure you want to delete ${link.shortUrl}?`)) {
-      setIsDeleting(true);
-      try {
-        onDelete(link.id);
-        // Optimistic update handled by parent, toast on success from parent
-      } catch (error) {
-        console.error('Failed to delete link:', error);
-        // Fix: Use ToastType enum
-        addToast('Failed to delete link.', ToastType.Error);
-      } finally {
-        setIsDeleting(false);
-      }
-    }
-  };
+  // const handleDelete = async () => {
+  //   if (window.confirm(`Are you sure you want to delete ${link.shortUrl}?`)) {
+  //     setIsDeleting(true);
+  //     try {
+  //       onDelete(link.id);
+  //       // Optimistic update handled by parent, toast on success from parent
+  //     } catch (error) {
+  //       console.error('Failed to delete link:', error);
+  //       // Fix: Use ToastType enum
+  //       addToast('Failed to delete link.', ToastType.Error);
+  //     } finally {
+  //       setIsDeleting(false);
+  //     }
+  //   }
+  // };
   
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
@@ -65,13 +64,13 @@ export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) 
             {link.shortUrl.replace(/^https?:\/\//, '')}
           </a>
           <p className="dark:text-slate-400 text-sm break-all mt-1">
-            <span className="font-medium">Original:</span> {link.originalUrl}
+            <span className="font-medium">Original:</span> {link.longUrl}
           </p>
         </div>
         <div className="dark:text-slate-300 text-sm sm:text-right mt-2 sm:mt-0">
-          <p>Clicks: {link.clicks}</p>
+          <p>Clicks: {link.totalClicks}</p>
           <p>Created: {formatDate(link.createdAt)}</p>
-          {link.expiry && <p>Expires: {formatDate(link.expiry)}</p>}
+          {link.expiresAt && <p>Expires: {formatDate(link.expiresAt)}</p>}
         </div>
       </div>
       <div className="mt-4 pt-4 border-t border-slate-700 flex flex-wrap gap-2 items-center">
@@ -83,9 +82,9 @@ export const ShortLinkItem: React.FC<ShortLinkItemProps> = ({ link, onDelete }) 
             <ChartBarIcon className="w-4 h-4" /> Analytics
           </Button>
         </Link>
-        <Button size="sm" variant="danger" onClick={handleDelete} isLoading={isDeleting} className="flex items-center gap-1 ml-auto">
+        {/* <Button size="sm" variant="danger" onClick={handleDelete} isLoading={isDeleting} className="flex items-center gap-1 ml-auto">
           <TrashIcon className="w-4 h-4" /> Delete
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
