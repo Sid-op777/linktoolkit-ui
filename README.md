@@ -76,7 +76,7 @@ Follow these instructions to get the project running on your local machine for d
     # .env.local
 
     # URL of the backend API for local development
-    BACKEND_BASE_URL=http://localhost:8080
+    NEXT_PUBLIC_BACKEND_BASE_URL=http://localhost:8080
     ```
     *Note: For this to work, the [LinkToolkit Backend](https://github.com/Sid-op777/linktoolkit-backend) must also be running locally on port 8080.*
 
